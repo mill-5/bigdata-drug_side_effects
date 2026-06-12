@@ -37,18 +37,18 @@ ALCOHOL_PROB = {
 # 중증도 확률 [Mild, Moderate, Severe]
 # 심장질환·신장질환은 Severe 비율 높음
 SEVERITY_PROB = {
-    'Heart Disease': [0.20, 0.35, 0.45],
-    'Kidney Disease':[0.25, 0.35, 0.40],
-    'Hypertension':  [0.30, 0.40, 0.30],
-    'Diabetes':      [0.40, 0.35, 0.25],
-    'Asthma':        [0.55, 0.30, 0.15],
+    'Heart Disease': [0.10, 0.25, 0.65],
+    'Kidney Disease':[0.15, 0.30, 0.55],
+    'Hypertension':  [0.25, 0.40, 0.35],
+    'Diabetes':      [0.35, 0.40, 0.25],
+    'Asthma':        [0.50, 0.35, 0.15],
 }
 
 # 나이가 많을수록 Severe 확률 증가 (60세 이상 가중치 추가)
-AGE_SEVERE_BOOST = 0.15   # 60세 이상이면 Severe 확률 +15%p
+AGE_SEVERE_BOOST = 0.20   # 60세 이상이면 Severe 확률 +20%p
 
 # 흡연 + 음주 동시인 경우 Severe 추가 부스트
-LIFESTYLE_BOOST  = 0.10
+LIFESTYLE_BOOST  = 0.15
 
 # 약물별 Severe 위험도 조정 (상대적 위험)
 DRUG_SEVERE_BOOST = {
@@ -60,7 +60,7 @@ DRUG_SEVERE_BOOST = {
     'Omeprazole':   -0.05,
     'Lisinopril':    0.10,
     'Amlodipine':    0.10,
-    'Insulin':       0.15,
+    'Insulin':       0.20,
     'Sertraline':    0.10,
 }
 

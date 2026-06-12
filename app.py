@@ -140,10 +140,11 @@ if page == "💊 부작용 예측":
     with col2:
         dosage = st.number_input("복용량 (mg)", min_value=0.0, value=100.0)
         cond_options = {f'{e} ({k})': e for e, k in CONDITION_KO.items()}
+        COND_NONE = "없음 (기저질환 없음)"
         conds_selected = st.multiselect(
             "기저질환 (복수 선택 가능)",
-            list(cond_options.keys()),
-            default=[list(cond_options.keys())[0]]
+            [COND_NONE] + list(cond_options.keys()),
+            default=[COND_NONE]
         )
         smoking = st.selectbox("흡연 여부", ["No", "Yes"])
         alcohol_freq = st.slider("음주 횟수 (월)", min_value=0, max_value=30, value=0,
@@ -156,8 +157,11 @@ if page == "💊 부작용 예측":
         if not os.path.exists(os.path.join(MODEL_PATH, 'rf_model.pkl')):
             st.error("모델 파일이 없습니다. 먼저 `python train.py`를 실행하세요.")
             st.stop()
-        if not drugs_selected or not conds_selected:
-            st.warning("복용 약물과 기저질환을 최소 1개씩 선택해주세요.")
+        if not drugs_selected:
+            st.warning("복용 약물을 최소 1개 선택해주세요.")
+            st.stop()
+        if not conds_selected:
+            st.warning("기저질환을 선택하거나 '없음'을 선택해주세요.")
             st.stop()
 
         model, target_le, preprocessor, feature_cols, meta = load_model()
@@ -166,7 +170,7 @@ if page == "💊 부작용 예측":
         label_map  = {c: f'{c} ({SEVERITY_KO.get(c, c)})' for c in classes}
         severe_idx = list(classes).index('Severe')
 
-        selected_conds = [cond_options[c] for c in conds_selected]
+        selected_conds = [cond_options[c] for c in conds_selected if c in cond_options]
         selected_drugs = [drug_options[d] for d in drugs_selected]
 
         # ── multi-hot 입력 벡터 구성 ──────────────────────────
